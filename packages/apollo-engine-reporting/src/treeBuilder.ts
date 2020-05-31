@@ -5,6 +5,7 @@ import {
   PersistedQueryNotSupportedError,
 } from 'apollo-server-errors';
 import { InvalidGraphQLRequestError, Logger } from 'apollo-server-types';
+import safeStringify from 'fast-safe-stringify';
 
 function internalError(message: string) {
   return new Error(`[internal apollo-server error] ${message}`);
@@ -266,7 +267,7 @@ function errorToProtobufError(error: GraphQLError): Trace.Error {
     location: (error.locations || []).map(
       ({ line, column }) => new Trace.Location({ line, column }),
     ),
-    json: JSON.stringify(error),
+    json: safeStringify(error),
   });
 }
 
